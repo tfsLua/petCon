@@ -1,0 +1,101 @@
+''' 
+Nosso projeto da Pet.Con vai entrar aqui tá. As divisões vão ser feitas por sessão.
+
+'''
+
+''' LOGIN '''
+
+class Usuario:   
+    def __init__(self, firstName, lastName,  email, senha):
+        self.firstName = firstName
+        self.lastName = lastName
+        self.email = email
+        self.senha = senha
+
+    def confirmar_senha(self, senha_verificacao):
+        return self.senha == senha_verificacao 
+
+
+def cadastrar_usuario():
+    firstName = input("Digite o nome do usuário: ")
+    lastName = input("Digite seu último nome: ")
+    email = input("Digite o email do usuário: ")
+    senha = input("Digite a senha do usuário: ")
+    
+    novo_usuario = Usuario(firstName, lastName, email, senha)
+    return novo_usuario
+
+usuarios_cadastrados =[]
+
+
+class Abrigo:
+    def __init__(self, abrigoName, contato, endereco):
+        self.abrigoName = abrigoName
+        self.contato = contato
+        self.endereco = endereco
+
+def cadastrar_abrigo():
+    abrigoName = input("Qual o nome do seu abrigo? ")
+    contato = input("Número de contato: ")
+    endereco = input("Endereço do abrigo: ")
+    
+    novo_abrigo = Abrigo(abrigoName, contato, endereco)
+
+    return novo_abrigo
+
+
+def login_usuario(usuarios):
+    email = input("Digite seu email: ")
+   
+
+    while True: 
+        senha_passada = input("Digite a senha: ")
+        for usuario  in usuarios:
+            if usuario.email == email:
+                if usuario.confirmar_senha(senha_passada):
+                    print("Bem vindo a nossa plataforma!")
+                    return usuario
+                
+                else:
+                    print("Senha ou Email incorretos, refaça o login")
+                    break
+            
+
+def opcao1():
+    print("Bem vindo a nossa plataforma.")
+    novo_usuario = cadastrar_usuario()
+    usuarios_cadastrados.append(novo_usuario)
+   
+    
+def opcao2():
+   
+    print("Você escolheu a opção 2.")
+    usuario_logado = login_usuario(usuarios_cadastrados)
+    if usuario_logado:
+        print("Login bem-sucedido!")
+        
+    else:
+        print("Falha no login. Verifique suas credenciais e tente novamente.")
+
+
+def opcao3():
+    print("Você escolheu a opção 3.")
+
+
+while True:
+    print("Bem vindo a Pet.Con o que você deseja fazer?")
+    print("\n1 - Cadastrar novo Usuário\n  \n2 - Login\n \n3 - Cadastrar novo Abrigo\n")
+    escolha = input()
+
+    if  escolha == '1':
+        opcao1()
+    elif escolha == '2':
+        opcao2()
+        break
+    elif escolha == '3':
+        opcao3()
+   
+    else:
+        print("Opção inválida.")
+
+
