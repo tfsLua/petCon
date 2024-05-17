@@ -8,7 +8,11 @@ class Usuario:
         self.senha = senha
 
     def confirmar_senha(self, senha_verificacao):
-        return self.senha == senha_verificacao 
+        return self.senha == senha_verificacao
+    
+    def alterar_senha(self, nova_senha):
+        self.senha = nova_senha
+        print("Senha alterada com sucesso!")
 
 def cadastrar_usuario():
     firstName = input("Digite o nome do usuário: ")
@@ -22,8 +26,17 @@ def cadastrar_usuario():
 usuarios_cadastrados = []
 usuario_predefinido = Usuario("jacio", "filho", "jacioalves6", "jacioalves")
 
-# Adicionar o usuário pré-definido à lista de usuários cadastrados
+
 usuarios_cadastrados.append(usuario_predefinido)
+
+def recuperar_senha(email):
+    for usuario in usuarios_cadastrados:
+        if usuario.email == email:
+            nova_senha = input("Digite a nova senha: ")
+            usuario.alterar_senha(nova_senha)
+            return
+    print("Email não encontrado.")
+
 class Abrigo:
     def __init__(self, abrigoName, contato, endereco, foto=None):
         self.abrigoName = abrigoName
@@ -62,18 +75,21 @@ def cadastrar_pet():
     print("Pet cadastrado com sucesso!")
 
 def login_usuario(usuarios):
-    email = input("Digite seu email: ")
-    senha_passada = input("Digite a senha: ")
+    while True:
+        email = input("Digite seu email: ")
+        senha_passada = input("Digite a senha: ")
 
-    for usuario in usuarios:
-        if usuario.email == email:
-            if usuario.confirmar_senha(senha_passada):
-                print("Bem-vindo(a) à nossa plataforma!")
-                return usuario
-            else:
-                print("Senha incorreta. Tente novamente.")
-                return None
-    print("Email não encontrado. Tente novamente.")
+        for usuario in usuarios:
+            if usuario.email == email:
+                if usuario.confirmar_senha(senha_passada):
+                    print("Bem-vindo(a) à nossa plataforma!")
+                    return usuario
+
+        print("Credenciais incorretas. Tente novamente ou digite 'sair' para voltar ao menu principal.")
+        resposta = input("Digite 'sair' para voltar ao menu principal ou pressione Enter para tentar novamente: ")
+        if resposta.lower() == 'sair':
+            break
+
     return None
 
 def opcao1_logado():
@@ -148,17 +164,23 @@ def opcao3():
     novo_abrigo = cadastrar_abrigo()
     abrigos_cadastrados.append(novo_abrigo)
     print("Abrigo cadastrado com sucesso!")
+def opcao4():
+    print("Você escolheu a opção 4")
+    email_recuperacao = input("Digite o email para recuperar a senha: ")
+    recuperar_senha(email_recuperacao)
 
 while True:
     print("Bem-vindo(a) à Pet.Con! O que você deseja fazer?")
-    print("\n1 - Cadastrar novo Usuário\n2 - Login\n3 - Cadastrar novo Abrigo\n")
+    print("\n1 - Cadastrar novo Usuário\n2 - Login\n3 - Cadastrar novo Abrigo\n4 - Recuperar Senha\n")
     escolha = input()
 
-    if escolha == '1':
+    if escolha == '1' :
         opcao1()
     elif escolha == '2':
         opcao2()
     elif escolha == '3':
         opcao3()
+    elif escolha == '4':
+        opcao4()
     else:
         print("Opção inválida. Tente novamente.")
