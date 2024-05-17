@@ -62,6 +62,17 @@ class Pet:
         self.raca = raca
         self.abrigo = abrigo
 
+    def delete_pet(self, nome):
+        pet_found = False
+        for pet in pets_cadastrados:
+            if pet.nome == nome:
+                pets_cadastrados.remove(pet)
+                print(f"{nome} removido com sucesso!")
+                pet_found = True
+                break
+        if not pet_found:
+            print(f"Pet com nome '{nome}' não encontrado.")
+
 pets_cadastrados = []
 
 def cadastrar_pet():
@@ -107,6 +118,11 @@ def opcao3_logado():
 def opcao4_logado():
     print("Você escolheu 4")
     # PARTE DO CÓDIGO PARA EXCLUIR UM PET
+    nome_pet = input("Nome do pet a ser removido: ")
+    for pet in pets_cadastrados:
+        if pet.nome == nome_pet:
+            pet.delete_pet(nome_pet)
+            break
 
 def opcao5_logado():
     print("Pets disponiveis para adoção")
@@ -118,8 +134,16 @@ def opcao5_logado():
             print(f"Nome: {pet.nome}, Idade: {pet.idade}, Raça: {pet.raca}, Abrigo: {pet.abrigo}")
 
 def opcao6_logado():
-    print("Você escolheu 6")
-    # PARTE DO CÓDIGO PARA VER ABRIGOS DISPONÍVEIS
+    if not abrigos_cadastrados:
+        print("Não há abrigos cadastrados no momento.")
+    else:
+        print("Abrigos cadastrados:")
+        for idx, abrigo in enumerate(abrigos_cadastrados, start=1):
+            print(f"Abrigo {idx}:")
+            print(f"Nome: {abrigo.abrigoName}")
+            print(f"Contato: {abrigo.contato}")
+            print(f"Endereço: {abrigo.endereco}")
+            print()  # Adiciona uma linha em branco entre os abrigos
 
 def opcao7_logado():
     print("Você escolheu 7")
