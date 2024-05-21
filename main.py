@@ -1,14 +1,15 @@
 ''' LOGIN '''
 
 class Usuario:   
-    def __init__(self, firstName, lastName, email, senha):
+    def __init__(self, firstName, lastName, email, senha, aptSize):
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
         self.senha = senha
+        self.aptSize = aptSize
 
-    def confirmar_senha(self, senha_verificacao):
-        return self.senha == senha_verificacao
+    def confirmar_senha(self, senha_passada):
+        return self.senha == senha_passada
     
     def alterar_senha(self, nova_senha):
         self.senha = nova_senha
@@ -19,12 +20,13 @@ def cadastrar_usuario():
     lastName = input("Digite seu último nome: ")
     email = input("Digite o email do usuário: ")
     senha = input("Digite a senha do usuário: ")
+    aptSize = input("Quantos m² sua casa ou apt têm?")
     
-    novo_usuario = Usuario(firstName, lastName, email, senha)
+    novo_usuario = Usuario(firstName, lastName, email, senha, aptSize)
     return novo_usuario
 
 usuarios_cadastrados = []
-usuario_predefinido = Usuario("jacio", "filho", "jacioalves6", "jacioalves")
+usuario_predefinido = Usuario("jacio", "filho", "jacioalves6", "jacioalves", 60)
 
 
 usuarios_cadastrados.append(usuario_predefinido)
@@ -36,6 +38,19 @@ def recuperar_senha(email):
             usuario.alterar_senha(nova_senha)
             return
     print("Email não encontrado.")
+
+def match(aptSize):
+    melhor_opcao = None
+    for pet in pets_cadastrados:
+        if int(aptSize) >= 60 and pet.tamanho.upper() == 'G':
+            melhor_opcao = pet
+        elif 40 <= int(aptSize) < 60 and pet.tamanho.upper() == 'M':
+            melhor_opcao = pet
+        elif  int(aptSize) < 40 and pet.tamanho.upper() == 'P':
+            melhor_opcao = pet
+    return melhor_opcao
+
+           
 
 class Abrigo:
     def __init__(self, abrigoName, contato, endereco, foto=None):
@@ -56,11 +71,12 @@ def cadastrar_abrigo():
 abrigos_cadastrados = []
 
 class Pet:
-    def __init__(self, nome, idade, raca, abrigo):
+    def __init__(self, nome, idade, raca, abrigo, tamanho):
         self.nome = nome
         self.idade = idade
         self.raca = raca
         self.abrigo = abrigo
+        self.tamanho = tamanho
 
     def delete_pet(self, nome):
         pet_found = False
@@ -74,14 +90,37 @@ class Pet:
             print(f"Pet com nome '{nome}' não encontrado.")
 
 pets_cadastrados = []
-
+pets_predefinidos = [
+    Pet("Bolinha", "3", "Poodle", "Abrigo A", "P"),
+    Pet("Rex", "2", "Labrador", "Abrigo B", "M"),
+    Pet("Mel", "1", "Vira-lata", "Abrigo C", "G"),
+    Pet("Luna", "4", "Shih Tzu", "Abrigo D", "P"),
+    Pet("Thor", "2", "Golden Retriever", "Abrigo E", "M"),
+    Pet("Zeus", "1", "Pastor Alemão", "Abrigo F", "G"),
+    Pet("Maya", "3", "Pinscher", "Abrigo G", "P"),
+    Pet("Lucky", "2", "Husky Siberiano", "Abrigo H", "M"),
+    Pet("Bela", "1", "Border Collie", "Abrigo I", "G"),
+    Pet("Cookie", "4", "Bulldog Francês", "Abrigo J", "P"),
+    Pet("Max", "2", "Bulldog Inglês", "Abrigo K", "M"),
+    Pet("Simba", "1", "Dálmata", "Abrigo L", "G"),
+    Pet("Daisy", "3", "Beagle", "Abrigo M", "P"),
+    Pet("Rocky", "2", "Boxer", "Abrigo N", "M"),
+    Pet("Molly", "1", "Cocker Spaniel", "Abrigo O", "G"),
+    Pet("Jack", "4", "Chihuahua", "Abrigo P", "P"),
+    Pet("Buddy", "2", "Dachshund", "Abrigo Q", "M"),
+    Pet("Lucy", "1", "Doberman", "Abrigo R", "G"),
+    Pet("Rosie", "3", "Rottweiler", "Abrigo S", "P"),
+    Pet("Oscar", "2", "Schnauzer", "Abrigo T", "M")
+]
+pets_cadastrados.extend(pets_predefinidos)
 def cadastrar_pet():
     nome = input("Nome do pet: ")
     idade = input("Idade do pet: ")
     raca = input("Raça do pet: ")
     abrigo = input("Abrigo onde o pet está: ")
+    tamanho = input("Qual o tamanho do pet? P - Pequeno | M - Médio | G - Grande")
     
-    novo_pet = Pet(nome, idade, raca, abrigo)
+    novo_pet = Pet(nome, idade, raca, abrigo, tamanho)
     pets_cadastrados.append(novo_pet)
     print("Pet cadastrado com sucesso!")
 
@@ -109,7 +148,22 @@ def opcao1_logado():
 
 def opcao2_logado():
     print("Você escolheu 2")
-    # PARTE DO CÓDIGO PARA ADOTAR UM PET
+    usuario_logado = login_usuario(usuarios_cadastrados)
+    if usuario_logado:
+        tamanho_apt_usuario = usuario_logado.aptSize
+        melhor_opcao = match(tamanho_apt_usuario)
+        if melhor_opcao:
+            print("Melhor opção para adoção de acordo com o seu lifestyle:")
+            print(f"Nome: {melhor_opcao.nome}, Idade: {melhor_opcao.idade}, Raça: {melhor_opcao.raca}, Abrigo: {melhor_opcao.abrigo}, Tamanho: {melhor_opcao.tamanho}")
+            print("\nOutros pets disponíveis para adoção:")
+            for pet in pets_cadastrados:
+                if pet != melhor_opcao:
+                    print(f"Nome: {pet.nome}, Idade: {pet.idade}, Raça: {pet.raca}, Abrigo: {pet.abrigo}, Tamanho: {pet.tamanho}")
+
+        else:
+            print("Não há pets disponíveis para adoção que atendam aos critérios.")
+    else:
+        print("Falha no login. Verifique suas credenciais e tente novamente.")
 
 def opcao3_logado():
     print("Você escolheu 3")
@@ -125,13 +179,15 @@ def opcao4_logado():
             break
 
 def opcao5_logado():
-    print("Pets disponiveis para adoção")
-    if not pets_cadastrados:
+    print("Pets disponíveis para adoção:")
+    if not pets_cadastrados and not pets_predefinidos:
         print("Não há pets disponíveis para adoção no momento.")
     else:
-        print("Pets disponíveis para adoção:")
-        for pet in pets_cadastrados:
-            print(f"Nome: {pet.nome}, Idade: {pet.idade}, Raça: {pet.raca}, Abrigo: {pet.abrigo}")
+        if pets_cadastrados:
+            print("Pets cadastrados:")
+            for pet in pets_cadastrados:
+                print(f"Nome: {pet.nome}, Idade: {pet.idade}, Raça: {pet.raca}, Abrigo: {pet.abrigo}, Tamanho: {pet.tamanho}")
+        
 
 def opcao6_logado():
     if not abrigos_cadastrados:
@@ -143,7 +199,7 @@ def opcao6_logado():
             print(f"Nome: {abrigo.abrigoName}")
             print(f"Contato: {abrigo.contato}")
             print(f"Endereço: {abrigo.endereco}")
-            print()  # Adiciona uma linha em branco entre os abrigos
+            print()  
 
 def opcao7_logado():
     print("Você escolheu 7")
