@@ -213,8 +213,40 @@ def opcao6_logado():
             print(f"Endereço: {abrigo.endereco}")
             print()  
 
-def opcao7_logado():
-    print("Você escolheu 7")
+def opcao7_logado(usuario_logado):
+    print("Você escolheu 7 - Editar Perfil")
+    while True:
+        print("\nSelecione uma opção para editar o perfil:")
+        print("1. Nome")
+        print("2. Email")
+        print("3. Tamanho da Moradia")
+        print("4. Sair")
+
+        opcao = input("Escolha uma opção: ")
+
+        if opcao == "1":
+            novo_nome = input("Digite o novo nome: ")
+            usuario_logado.firstName = novo_nome
+        elif opcao == "2":
+            novo_email = input("Digite o novo email: ")
+            usuario_logado.email = novo_email
+        elif opcao == "3":
+            novo_tamanho = input("Digite o novo tamanho da moradia (Casa/Apartamento): ")
+            usuario_logado.aptSize = novo_tamanho
+        elif opcao == "4":
+            print("Saindo...")
+            break
+        else:
+            print("Opção inválida. Por favor, escolha uma opção válida.")
+
+    print("\nPerfil atualizado:")
+    print("Nome:", usuario_logado.firstName)
+    print("Email:", usuario_logado.email)
+    print("Tamanho da Moradia:", usuario_logado.aptSize)
+
+
+def opcao8_logado():
+    print("Você escolheu 8")
     # PARTE DO CÓDIGO PARA SAIR     
 
 def opcao1():
@@ -228,7 +260,7 @@ def opcao2():
     usuario_logado = login_usuario(usuarios_cadastrados)
     if usuario_logado:
         while True:
-            print("\nEscolha uma opção:\n1 - Adicionar novo Pet\n2 - Adotar um Pet\n3 - Alterar informações do pet\n4 - Excluir um Pet\n5 - Ver os pets disponíveis para adoção\n6 - Ver abrigos disponíveis\n7 - Encerrar a Sessão\n")
+            print("\nEscolha uma opção:\n1 - Adicionar novo Pet\n2 - Adotar um Pet\n3 - Alterar informações do pet\n4 - Excluir um Pet\n5 - Ver os pets disponíveis para adoção\n6 - Ver abrigos disponíveis\n7 - Editar perfil de usuário\n8 - Encerrar a Sessão\n")
             escolha_logado = input()
             
             if escolha_logado == '1':
@@ -245,11 +277,11 @@ def opcao2():
                 opcao6_logado()
             elif escolha_logado == '7':
                 opcao7_logado()
+            elif escolha_logado == '8':
+                opcao8_logado()
                 break
             else:
-                print("Opção inválida. Tente novamente.")
-    else:
-        print("Falha no login. Verifique suas credenciais e tente novamente.")
+                print("Falha no login. Verifique suas credenciais e tente novamente.")
 
 def opcao3():
     print("Você escolheu a opção 3.")
