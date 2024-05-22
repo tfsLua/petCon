@@ -168,6 +168,18 @@ def opcao2_logado():
 def opcao3_logado():
     print("Você escolheu 3")
     # PARTE DO CÓDIGO PARA ALTERAR INFORMAÇÕES DO PET 
+    nome_pet = input("Digite o nome do pet que deseja atualizar: ")
+    for pet in pets_cadastrados:
+        if pet.nome == nome_pet:
+            print("Digite as novas informações do pet:")
+            pet.nome = input("Nome do pet: ")
+            pet.idade = input("Idade do pet: ")
+            pet.raca = input("Raça do pet: ")
+            pet.abrigo = input("Abrigo onde o pet está: ")
+            pet.tamanho = input("Qual o tamanho do pet? P - Pequeno | M - Médio | G - Grande")
+            print("Informações do pet atualizadas com sucesso!")
+            return
+    print("Pet não encontrado.")
 
 def opcao4_logado():
     print("Você escolheu 4")
